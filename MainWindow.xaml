@@ -1,0 +1,27 @@
+﻿<Window x:Class="Validation_sample.MainWindow" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:syncfusion="http://schemas.syncfusion.com/wpf" 
+        Title="Validation demo" ResizeMode="NoResize"
+        xmlns:local="clr-namespace:Validation_sample" WindowStartupLocation="CenterScreen"   
+        FontFamily="Calibri" FontSize="13"  Height="650" Width="595">
+    <local:MyGrid ShowGridLines="True" x:Name="MyGrid">
+        <local:MyGrid.GridLinesPen>
+            <Pen Brush="#FFCCCCCC" Thickness="1" />
+        </local:MyGrid.GridLinesPen>
+        
+        <local:MyGrid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </local:MyGrid.RowDefinitions>
+        <local:MyGrid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </local:MyGrid.ColumnDefinitions>
+        
+        <local:ValidationRuleView Margin="5" Grid.Column="0" Grid.Row="1" />
+        <local:NotifyDataErrorView Margin="5" Grid.Column="1" Grid.Row="1" />
+        <local:DataErrorView Margin="5" Grid.Column="0" Grid.Row="2"/>
+        <local:DataErrorWithTemplate Margin="5" Grid.Column="1" Grid.Row="2"/>
+    </local:MyGrid>
+</Window>
