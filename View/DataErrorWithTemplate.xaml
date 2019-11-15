@@ -14,24 +14,30 @@
     <UserControl.Resources>
         <local:StringToVisibilityConverter x:Key="StringConverter"/>
         <local:EmptyStringToVisibilityConverter x:Key="EmptyStringConverter"/>
-        <Style TargetType="{x:Type TextBox}">
+        <Style x:Key="errorTemplate" TargetType="{x:Type Control}">
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
                     <ControlTemplate>
-                        <DockPanel LastChildFill="True">
-                            <TextBlock DockPanel.Dock="Right" 
-                       Foreground="Red"
-                       FontSize="14pt" 
-                       Margin="-15,0,0,0" FontWeight="Bold">*
-                            </TextBlock>
-                            <Border BorderBrush="Red" BorderThickness="1">
-                                <AdornedElementPlaceholder Name="controlWithError"/>
+                        <DockPanel>
+                            <Border>
+                                <AdornedElementPlaceholder x:Name="controlWithError"/>
                             </Border>
+                            <Path HorizontalAlignment="Right"
+                                  VerticalAlignment="Top"
+                                  Width="10" Height="10"
+                                  Data="M0,0 L 1,0 1,1z"
+                                  Margin="-10,0,0,0"
+                                  Stretch="Fill"
+                                  Fill="Red"/>
                         </DockPanel>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource errorTemplate}"/>
+        <Style TargetType="{x:Type syncfusion:IntegerTextBox}" BasedOn="{StaticResource errorTemplate}"/>
+        <Style TargetType="{x:Type syncfusion:SfMaskedEdit}" BasedOn="{StaticResource errorTemplate}"/>
+
     </UserControl.Resources>
     <Grid Name="Grid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto">
         <Grid.RowDefinitions>

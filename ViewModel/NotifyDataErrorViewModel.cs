@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Syncfusion.Windows.Shared;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace Validation_sample
 {
-    public class NotifyDataErrorViewModel : INotifyDataErrorInfo, INotifyPropertyChanged
+    public class NotifyDataErrorViewModel : NotificationObject, INotifyDataErrorInfo
     {
         private Dictionary<string, List<string>> propErrors = new Dictionary<string, List<string>>();
 
@@ -170,26 +171,21 @@ namespace Validation_sample
         # endregion
 
         #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged(string name)
         {
-            if (PropertyChanged != null)
+            RaisePropertyChanged(name);
+            if (name == "Name")
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-
-                if (name == "Name")
-                {
-                    ValidateName();
-                }
-                else if (name == "Age")
-                {
-                    ValidateAge();
-                }
-                else if (name == "Email")
-                {
-                    ValidateEmail();
-                }
+                ValidateName();
+            }
+            else if (name == "Age")
+            {
+                ValidateAge();
+            }
+            else if (name == "Email")
+            {
+                ValidateEmail();
             }
         }
 

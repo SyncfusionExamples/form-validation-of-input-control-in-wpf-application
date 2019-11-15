@@ -11,10 +11,11 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Diagnostics;
+using Syncfusion.Windows.Shared;
 
 namespace Validation_sample
 {
-    public class DataErrorViewModel : INotifyPropertyChanged , IDataErrorInfo
+    public class DataErrorViewModel : NotificationObject , IDataErrorInfo
     {
         public DataErrorViewModel()
         {
@@ -261,12 +262,5 @@ namespace Validation_sample
 
         #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(string name)
-        {
-            if(PropertyChanged != null)
-                this.PropertyChanged(this,new PropertyChangedEventArgs(name));
-        }
     }
 }
