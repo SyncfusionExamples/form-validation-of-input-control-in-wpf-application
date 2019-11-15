@@ -111,10 +111,11 @@ namespace Validation_sample
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
-        private void OnPropertyErrorsChanged(string propertyName)
+        private void OnErrorsChanged(string propertyName)
         {
             if (ErrorsChanged != null)
                 ErrorsChanged.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+            RaisePropertyChanged("HasErrors");
         }
 
         public System.Collections.IEnumerable GetErrors(string propertyName)
@@ -155,7 +156,7 @@ namespace Validation_sample
             if (!propErrors[propertyName].Contains(error))
             {
                 propErrors[propertyName].Add(error);
-                OnPropertyErrorsChanged(propertyName);
+                OnErrorsChanged(propertyName);
             }
         }
 
@@ -164,7 +165,7 @@ namespace Validation_sample
             if (propErrors.ContainsKey(propertyName))
             {
                 propErrors.Remove(propertyName);
-                OnPropertyErrorsChanged(propertyName);
+                OnErrorsChanged(propertyName);
             }
         }
 
@@ -187,26 +188,6 @@ namespace Validation_sample
             {
                 ValidateEmail();
             }
-        }
-
-        private ICommand _command;
-
-        public ICommand SaveCommand
-        {
-            get
-            {
-                return _command ?? (_command = new RelayCommand<object>(SaveChanges, IsEnable));
-            }
-        }
-
-        public void SaveChanges(object param)
-        {
-            //code
-        }
-
-        bool IsEnable(object obj)
-        {
-            return !HasErrors;
         }
 
         #endregion

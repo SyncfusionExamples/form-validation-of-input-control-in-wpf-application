@@ -108,9 +108,19 @@ namespace Validation_sample
 
         #region IDataErrorInfo Members
 
+        private string _error;
+
         public string Error
         {
-            get { return null; }
+            get { return _error; }
+            set
+            {
+                if (_error != value)
+                {
+                    _error = value;
+                    RaisePropertyChanged("Error");
+                }
+            }
         }
 
         public string this[string columnName]
@@ -236,28 +246,20 @@ namespace Validation_sample
                     }
                 }
             }
-
+            if(errorList.Count == 0)
+            {
+                Error = null;
+            }
+            else
+            {
+                Error = "Error";
+            }
             return result;
         }
 
-        private ICommand _command;
-
-        public ICommand SaveCommand
+        bool HasError()
         {
-            get
-            {
-                return _command ?? (_command = new RelayCommand<object>(SaveChanges, IsEnable));
-            }
-        }
-
-        public void SaveChanges(object param)
-        {
-            //code
-        }
-
-        bool IsEnable(object obj)
-        {
-            return string.IsNullOrEmpty(this["Name"]) && string.IsNullOrEmpty(this["Age"]) && string.IsNullOrEmpty(this["Email"]);
+            return !(string.IsNullOrEmpty(this["Name"]) && string.IsNullOrEmpty(this["Age"]) && string.IsNullOrEmpty(this["Email"]));
         }
 
         #endregion

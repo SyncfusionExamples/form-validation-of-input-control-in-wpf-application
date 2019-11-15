@@ -11,16 +11,19 @@
         <local:DataErrorViewModel/>        
     </UserControl.DataContext>
     <UserControl.Resources>
-        <Style TargetType="TextBox">
+        <Style x:Key="errorToolTip" TargetType="Control">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="ToolTip" 
                             Value="{
                                 Binding RelativeSource={x:Static RelativeSource.Self}, 
-                                Path=(Validation.Errors)[0].ErrorContent}"/>
+                                Path=(Validation.Errors)/ErrorContent}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource errorToolTip}"/>
+        <Style TargetType="{x:Type syncfusion:IntegerTextBox}" BasedOn="{StaticResource errorToolTip}"/>
+        <Style TargetType="{x:Type syncfusion:SfMaskedEdit}" BasedOn="{StaticResource errorToolTip}"/>
     </UserControl.Resources>
     <Grid Name="Grid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto">
         <Grid.RowDefinitions>
@@ -56,7 +59,7 @@
                  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
 
         <syncfusion:IntegerTextBox Height="Auto" Width="200" 
-                 Margin="5" Grid.Column="2" Grid.Row="2" 
+                 Margin="5" Grid.Column="2" Grid.Row="2" Name="name"
                  Value="{Binding Age, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True,TargetNullValue=''}" />
 
         <syncfusion:DateTimeEdit x:Name="dob" Height="Auto" Width="200" 
@@ -68,7 +71,7 @@
                  MaskType="RegEx" Mask="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{1,4}"
                  Value="{Binding Email, Mode=TwoWay,NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
 
-        <Button Content="Submit" Command="{Binding Path=SaveCommand}"
+        <Button Content="Submit"
                 Grid.Column="2" Grid.Row="5" 
                 HorizontalContentAlignment="Center" Width="100" Height="25" 
                 Margin="15">
@@ -76,12 +79,9 @@
                 <Style TargetType="Button">
                     <Setter Property="IsEnabled" Value="False"/>
                     <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=dob}" Value="False"/>
-                            </MultiDataTrigger.Conditions>
+                        <DataTrigger Binding="{Binding Error}" Value="{x:Null}">
                             <Setter Property="IsEnabled" Value="True"/>
-                        </MultiDataTrigger>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Button.Style>

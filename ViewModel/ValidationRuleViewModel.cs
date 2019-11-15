@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace Validation_sample
 {
@@ -16,66 +10,53 @@ namespace Validation_sample
     {
         public ValidationRuleViewModel()
         {
-            this.Name = "John";
-            this.Age = 26;
-            this.DOB = DateTime.Parse("1995-10-12");
-            this.Email = "john@hotmail.com";
+            Name = "John";
+            Age = 26;
+            DOB = DateTime.Parse("1995-10-12");
+            Email = "john@hotmail.com";
         }
 
         private string firstName;
         public string Name
         {
-            get
-            {
-                return firstName;
-            }
+            get => firstName;
             set
             {
                 firstName = value;
-                this.RaisePropertyChanged("Name");
+                RaisePropertyChanged("Name");
             }
         }
 
-        [Range(1, 100)]
         private int? age;
         public int? Age
         {
-            get
-            {
-                return age;
-            }
+            get => age;
             set
             {
                 age = value;
-                this.RaisePropertyChanged("Age");
+                RaisePropertyChanged("Age");
             }
         }
 
         private DateTime dob;
         public DateTime DOB
         {
-            get
-            {
-                return dob;
-            }
+            get => dob;
             set
             {
                 dob = value;
-                this.RaisePropertyChanged("DOB");
+                RaisePropertyChanged("DOB");
             }
         }
 
         private string email;
         public string Email
         {
-            get
-            {
-                return email;
-            }
+            get => email;
             set
             {
                 email = value;
-                this.RaisePropertyChanged("Email");
+                RaisePropertyChanged("Email");
             }
         }
 
@@ -84,7 +65,9 @@ namespace Validation_sample
         private void RaisePropertyChanged(string name)
         {
             if (PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(name));
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
         }
     }
 
@@ -93,13 +76,13 @@ namespace Validation_sample
     /// </summary>
     public class EmailValidationRule : ValidationRule
     {
-        public override System.Windows.Controls.ValidationResult Validate(object value, CultureInfo cultureInfo)
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            var result = new System.Windows.Controls.ValidationResult(true, null);
+            ValidationResult result = new ValidationResult(true, null);
 
             if (string.IsNullOrEmpty(value.ToString()))
             {
-                result = new System.Windows.Controls.ValidationResult(false, "Email Required");
+                result = new ValidationResult(false, "Email Required");
             }
             else
             {
@@ -108,7 +91,9 @@ namespace Validation_sample
 				                                    [0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|" + @"([a-zA-Z]+[\w-]+\.)+[a-zA-Z]{2,4})$";
 
                 if (!Regex.IsMatch(value.ToString(), MatchEmailPattern))
-                    result = new System.Windows.Controls.ValidationResult(false, "Invalid Email ID");
+                {
+                    result = new ValidationResult(false, "Invalid Email ID");
+                }
             }
 
             return result;
@@ -120,24 +105,24 @@ namespace Validation_sample
     /// </summary>
     public class AgeValidationRule : ValidationRule
     {
-        public override System.Windows.Controls.ValidationResult Validate(object value, CultureInfo cultureInfo)
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            var result = new System.Windows.Controls.ValidationResult(true, null);
-            int age = 0;
-            if(string.IsNullOrEmpty(value.ToString()))
+            ValidationResult result = new ValidationResult(true, null);
+            int age;
+            if (string.IsNullOrEmpty(value.ToString()))
             {
-                result = new System.Windows.Controls.ValidationResult(false, "Age is mandatory");
+                result = new ValidationResult(false, "Age is mandatory");
             }
-           else if(int.TryParse(value.ToString(), out age))
+            else if (int.TryParse(value.ToString(), out age))
             {
-                if(age < 1 || age > 100)
+                if (age < 1 || age > 100)
                 {
-                    result = new System.Windows.Controls.ValidationResult(false, "Age should greater than 1 and less than 100");
+                    result = new ValidationResult(false, "Age should greater than 1 and less than 100");
                 }
             }
             else
             {
-                result = new System.Windows.Controls.ValidationResult(false, "Invalid input");
+                result = new ValidationResult(false, "Invalid input");
             }
             return result;
         }
@@ -148,16 +133,18 @@ namespace Validation_sample
     /// </summary>
     public class NameValidationRule : ValidationRule
     {
-       public override System.Windows.Controls.ValidationResult Validate(object value, CultureInfo cultureInfo)
-       {
-            var result = new System.Windows.Controls.ValidationResult(true, null);
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            ValidationResult result = new ValidationResult(true, null);
 
             if (string.IsNullOrEmpty(value.ToString()))
             {
-                result = new System.Windows.Controls.ValidationResult(false, "Name is mandatory");
+                result = new ValidationResult(false, "Name is mandatory");
             }
             else if (!Regex.IsMatch(value.ToString(), @"^[a-zA-Z]+$"))
-                result = new System.Windows.Controls.ValidationResult(false, "Should enter alphabets only!!!");
+            {
+                result = new ValidationResult(false, "Should enter alphabets only!!!");
+            }
 
             return result;
         }
@@ -165,12 +152,12 @@ namespace Validation_sample
 
     public class DateValidation : ValidationRule
     {
-        public override System.Windows.Controls.ValidationResult Validate(object value, CultureInfo cultureInfo)
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            var result = new System.Windows.Controls.ValidationResult(true, null);
-            if(value is null)
+            ValidationResult result = new ValidationResult(true, null);
+            if (value is null)
             {
-                result = new System.Windows.Controls.ValidationResult(false, "DOB is mandatory");
+                result = new ValidationResult(false, "DOB is mandatory");
             }
             return result;
         }
