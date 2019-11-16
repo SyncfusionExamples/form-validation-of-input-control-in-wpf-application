@@ -108,12 +108,11 @@ namespace Validation_sample
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             ValidationResult result = new ValidationResult(true, null);
-            int age;
             if (string.IsNullOrEmpty(value.ToString()))
             {
                 result = new ValidationResult(false, "Age is mandatory");
             }
-            else if (int.TryParse(value.ToString(), out age))
+            else if (int.TryParse(value.ToString(), out int age))
             {
                 if (age < 1 || age > 100)
                 {
